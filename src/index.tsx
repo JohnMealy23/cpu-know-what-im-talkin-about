@@ -13,6 +13,7 @@ import { store } from './reducers'
 import { heartbeatAction } from './reducers/actions'
 import { App } from './components/App'
 import { heavyLoadSnapshots } from './selectors/heavyLoadSnapshots'
+import { updateChart } from './components/Chartjs';
 
 const rootElement = document.getElementById('root')
 ReactDOM.render(
@@ -52,7 +53,12 @@ const heartbeat = async (): Promise<void> => {
     const load = await getAverageLoad()
     const loadSnapshot = getSnapshot(load, time)
     store.dispatch(heartbeatAction(loadSnapshot))
-    
+    updateChart({
+        data: loadSnapshot.load,
+        borderColor: loadSnapshot.color,
+        backgroundColor: loadSnapshot.color,
+        label: loadSnapshot.time
+    })
     const state = store.getState()
     // const heavyLoads = heavyLoadSnapshots(state.snapshot)
     logger({ state, loadSnapshot })

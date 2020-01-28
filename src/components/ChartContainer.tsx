@@ -50,7 +50,7 @@ export const BarContainerStyled = styled(BarContainer)`
     position: relative;
 `
 
-type ChartContainerFn = (chartContainerConfig?: { className?: string, children?: React.HTMLProps<HTMLInputElement>[] }) => any
+type ChartContainerFn = (chartContainerConfig?: { className?: string }, children?: React.HTMLProps<HTMLInputElement>[]) => any
 const ChartInnerContainer: ChartContainerFn = (config = {}) => {
     const snapshots = useSelector((state: State): LoadSnapshot[] => state.snapshots)
     return <div className={config.className || ''}>
