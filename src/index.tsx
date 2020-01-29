@@ -12,7 +12,7 @@ import { logger } from './logger'
 import { store } from './reducers'
 import { heartbeatAction } from './reducers/actions'
 import { App } from './components/App'
-import { heavyLoadSnapshots } from './selectors/heavyLoadSnapshots'
+import { heavyLoadSnapshots } from './selectors'
 import { updateChart } from './components/Chartjs';
 
 const rootElement = document.getElementById('root')
@@ -57,12 +57,14 @@ const heartbeat = async (): Promise<void> => {
         data: loadSnapshot.load,
         borderColor: loadSnapshot.color,
         backgroundColor: loadSnapshot.color,
-        label: loadSnapshot.time
+        time: loadSnapshot.time
     })
     const state = store.getState()
     // const heavyLoads = heavyLoadSnapshots(state.snapshot)
     logger({ state, loadSnapshot })
 }
+heartbeat()
+
 setInterval(() => {
     const isPaused = store.getState().isPaused
     if (!isPaused) {

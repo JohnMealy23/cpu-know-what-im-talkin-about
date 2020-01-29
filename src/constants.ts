@@ -1,13 +1,12 @@
 export const LOW_LOAD_THRESHOLD_CPU = .25 as const
 export const MEDIUM_LOAD_THRESHOLD_CPU = .5 as const
-export const HIGH_LOAD_THRESHOLD_CPU = 1 as const
-export const HIGH_LOAD_THRESHOLD_DURATION = 120000 as const // Two minutes
-export const CPU_POLE_INTERVAL = 2000 as const // Two seconds
-export const SNAPSHOT_LIFESPAN = 600000
-export const INTERVALS_TO_SCAN_FOR_HIGH_LOAD_DETECTION = HIGH_LOAD_THRESHOLD_DURATION / CPU_POLE_INTERVAL
+export const HIGH_LOAD_THRESHOLD_CPU = .2 as const
+export const HIGH_LOAD_THRESHOLD_DURATION = 5000 as const // Two minutes
+export const CPU_POLE_INTERVAL = 2000 as const // Ten seconds
+export const SNAPSHOT_LIFESPAN = 600000 as const // Ten minutes
 
 export const ENDPOINTS = {
-    getCpuAverage: 'getCpuAverage'
+    getCpuAverage: 'cpu'
 }
 export const PORT = 8338
 export const API_URL = `http://localhost:${PORT}`
