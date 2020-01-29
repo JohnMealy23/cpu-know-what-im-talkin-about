@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Chart, { ChartPoint, ChartData } from 'chart.js';
 import { formatTime } from '../utils';
+import { useSelector } from 'react-redux';
+import { getLatestSnapshot } from '../selectors';
 
 type ChartUpdate = {
     data: number;
@@ -86,13 +88,27 @@ const createChart = (canvasId: string) => {
     });
 }
 
-export const ChartElem = React.memo(() => {
+
+const ChartCanvas = ({ canvasId }: { canvasId: string }) => (<div>
+    <canvas id={canvasId} width="400" height="400"></canvas>
+</div>)
+
+const MemoizedChartCanvas = React.memo(ChartCanvas);
+
+export const ChartElem = () => {
     const canvasId = 'myChart'
     React.useEffect(() => {
         createChart(canvasId)
     })
-    return <div>
-        <canvas id={canvasId} width="400" height="400"></canvas>
-    </div>
-
-})
+    const loadSnapshot = useSelector(getLatestSnapshot)
+    if (loadSnapshot) {
+        updateChart({
+            data: loadSnapshot.load,
+            borderColor: loadSnapshot.color,
+            backgroundColor: loadSnapshot.color,
+            time: loadSnapshot.time
+        })
+    }
+    const canvas = <MemoizedChartCanvas canvasId={ canvasId }></MemoizedChartCanvas>
+    return canvas
+}

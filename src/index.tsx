@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Provider } from 'react-redux'
 import * as ReactDOM from 'react-dom'
 
-import { 
+import {
     CPU_POLE_INTERVAL,
     API_URL,
     ENDPOINTS,
@@ -17,10 +17,10 @@ import { updateChart } from './components/Chartjs';
 
 const rootElement = document.getElementById('root')
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  rootElement
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    rootElement
 )
 
 export type LoadAverage = number
@@ -30,15 +30,8 @@ export type LoadSnapshot = {
     color: string;
     load: LoadAverage;
 }
-let snapshotId = 0
-export const getSnapshot = (load: number, time: Date = new Date): LoadSnapshot => ({
-    id: snapshotId++,
-    color: getColor(load),
-    time,
-    load,
-})
 
-const roundToHundredth = (num: number): number => Math.round(num * 100)/100
+const roundToHundredth = (num: number): number => Math.round(num * 100) / 100
 
 const getColor = (load: number): string => `rgb(${Math.round(255 * load)}, 0, 0);`
 
@@ -47,21 +40,21 @@ const getAverageLoad = async (): Promise<LoadAverage> => {
     return roundToHundredth(load) as LoadAverage
 }
 
-const heartbeat = async (): Promise<void> => {
-    logger('heartbeat start')
+let snapshotId = 0
+const getLoadSnapshot = async (): Promise<LoadSnapshot> => {
     const time = new Date
     const load = await getAverageLoad()
-    const loadSnapshot = getSnapshot(load, time)
+    return {
+        id: snapshotId++,
+        color: getColor(load),
+        time,
+        load,
+    }
+}
+const heartbeat = async (): Promise<void> => {
+    logger('heartbeat start')
+    const loadSnapshot = await getLoadSnapshot()
     store.dispatch(heartbeatAction(loadSnapshot))
-    updateChart({
-        data: loadSnapshot.load,
-        borderColor: loadSnapshot.color,
-        backgroundColor: loadSnapshot.color,
-        time: loadSnapshot.time
-    })
-    const state = store.getState()
-    // const heavyLoads = heavyLoadSnapshots(state.snapshot)
-    logger({ state, loadSnapshot })
 }
 heartbeat()
 

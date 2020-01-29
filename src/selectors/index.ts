@@ -100,4 +100,14 @@ export const getLatestSnapshot = (state: State): LoadSnapshot | null => {
     }
 }
 
+export const getCpuRange = (state: State): LoadPeriod => {
+    const snapshots = getSnapshots(state)
+    return snapshots.reduce((highAndLow: LoadPeriod, snapshot) => {
+
+    }, {
+        high: null,
+        low: null
+    })
+}
+
 export const getIsPaused = (state: State): boolean => state.isPaused
