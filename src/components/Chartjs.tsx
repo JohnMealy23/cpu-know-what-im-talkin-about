@@ -4,6 +4,7 @@ import { formatTime } from '../utils';
 import { useSelector } from 'react-redux';
 import { getLatestSnapshot } from '../selectors';
 import styled from 'styled-components';
+import { LANGUAGE_CHART_LABEL } from '../language';
 
 type ChartUpdate = {
     data: number;
@@ -70,7 +71,7 @@ const createChart = (canvasId: string) => {
         data: {
             labels: [],
             datasets: [{
-                label: 'Processor Load',
+                label: LANGUAGE_CHART_LABEL,
                 data: [],
                 backgroundColor: [],
                 borderColor: [],

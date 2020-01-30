@@ -37,9 +37,12 @@ const MonitorsContainer = styled.div`
     `}
 `
 
-const getAverageCpuMonitor = (): React.ReactElement => {
-    const lastSnapshot = useSelector(getLatestSnapshot)
-    const load = lastSnapshot ? lastSnapshot.load : 0
+const AverageCpuMonitor = ({ 
+    latestSnapshot 
+}: { 
+    latestSnapshot: LoadSnapshot | null 
+}): React.ReactElement => {
+    const load = latestSnapshot ? latestSnapshot.load : 0
     return <Monitor
         children={<p>{load}</p>}
         label={LANGUAGE_AVERAGE_CPU_LABEL}
@@ -47,7 +50,7 @@ const getAverageCpuMonitor = (): React.ReactElement => {
 }
 
 // - How did the average CPU load change over a 10 minute window?
-const getCpuRangeMonitor = (): React.ReactElement => {
+const CpuRangeMonitor = (): React.ReactElement => {
     const minMax = useSelector(getCpuRange)
 
     const content = <div>
@@ -67,7 +70,7 @@ const getCpuRangeMonitor = (): React.ReactElement => {
 
 // - Has my computer been under heavy CPU load for 2 minutes or more? When? How many times?
 // - A CPU is considered under high average load when it has exceeded 1 for 2 minutes or more.
-const getHighsAndLowsMonitor = (highsAndLows: LoadPeriods): React.ReactElement => {
+const HighsAndLowsMonitor = ({ highsAndLows }: { highsAndLows: LoadPeriods }): React.ReactElement => {
 
     const highPeriodElems = <StyledOl>
         {highsAndLows.highs.map(getPeriodElem)}
@@ -89,10 +92,13 @@ const getHighsAndLowsMonitor = (highsAndLows: LoadPeriods): React.ReactElement =
     </MonitorsContainer>
 }
 
-const getWarningMonitor = (
+const WarningMonitor = ({
+    highsAndLows,
+    latestSnapshot,
+}: {
     highsAndLows: LoadPeriods,
     latestSnapshot: LoadSnapshot
-): JSX.Element => {
+}): JSX.Element => {
 
     let WarningMonitor
 
@@ -157,24 +163,26 @@ export const Monitors = () => {
     const highsAndLows = useSelector(getHighAndLowPeriods)
     const latestSnapshot = useSelector(getLatestSnapshot)
 
-    const averageCpuMonitor = getAverageCpuMonitor()
-    const cpuRangeMonitor = getCpuRangeMonitor()
-    const loadHistoryMonitors = getHighsAndLowsMonitor(highsAndLows)
+    const averageCpuMonitor = <AverageCpuMonitor latestSnapshot={latestSnapshot}></AverageCpuMonitor>
+    const cpuRangeMonitor = <CpuRangeMonitor></CpuRangeMonitor>
+    const loadHistoryMonitors = <HighsAndLowsMonitor highsAndLows={highsAndLows}></HighsAndLowsMonitor>
+
     let warningMonitor
     if (latestSnapshot) {
-        warningMonitor = getWarningMonitor(highsAndLows, latestSnapshot)
+        warningMonitor = <WarningMonitor highsAndLows={highsAndLows} latestSnapshot={latestSnapshot}></WarningMonitor>
     } else {
         warningMonitor = <span></span>
     }
+    
     return <div>
         <MonitorLabel>
             CPU Monitors
         </MonitorLabel>
         <MonitorsContainer>
             {averageCpuMonitor}
+            {warningMonitor}
             {cpuRangeMonitor}
         </MonitorsContainer>
         {loadHistoryMonitors}
-        {warningMonitor}
     </div>
 }
