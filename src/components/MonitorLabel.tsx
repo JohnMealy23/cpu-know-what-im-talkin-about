@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { COLOR_NOMINAL } from "../constants";
 
 export const MonitorLabel = styled.div`
     text-align: center;
@@ -7,4 +8,7 @@ export const MonitorLabel = styled.div`
     padding: 15px 0;
     margin-bottom: 15px;
     width: 100%;
+    ${({ color = COLOR_NOMINAL }: { color?: string}) => css`
+        background: ${color}
+    `}
 `

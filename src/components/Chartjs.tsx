@@ -3,6 +3,7 @@ import Chart, { ChartPoint, ChartData } from 'chart.js';
 import { formatTime } from '../utils';
 import { useSelector } from 'react-redux';
 import { getLatestSnapshot } from '../selectors';
+import styled from 'styled-components';
 
 type ChartUpdate = {
     data: number;
@@ -77,6 +78,11 @@ const createChart = (canvasId: string) => {
             }]
         },
         options: {
+            elements: { 
+                line: { 
+                    fill: false 
+                } 
+            },
             scales: {
                 yAxes: [{
                     ticks: {
@@ -89,17 +95,22 @@ const createChart = (canvasId: string) => {
 }
 
 
-const ChartCanvas = ({ canvasId }: { canvasId: string }) => (<div>
-    <canvas id={canvasId} width="400" height="400"></canvas>
-</div>)
-
-const MemoizedChartCanvas = React.memo(ChartCanvas);
-
-export const ChartElem = () => {
+const ChartCanvas = () => {
     const canvasId = 'myChart'
     React.useEffect(() => {
         createChart(canvasId)
     })
+    return <canvas id={canvasId}></canvas>
+}
+
+const StyledChartCanvas = styled(ChartCanvas)`
+    height: 400px;
+    width: 100%;
+`
+
+const MemoizedChartCanvas = React.memo(StyledChartCanvas);
+
+export const ChartElem = () => {
     const loadSnapshot = useSelector(getLatestSnapshot)
     if (loadSnapshot) {
         updateChart({
@@ -109,6 +120,5 @@ export const ChartElem = () => {
             time: loadSnapshot.time
         })
     }
-    const canvas = <MemoizedChartCanvas canvasId={ canvasId }></MemoizedChartCanvas>
-    return canvas
+    return <MemoizedChartCanvas></MemoizedChartCanvas>
 }

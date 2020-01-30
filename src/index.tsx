@@ -3,17 +3,15 @@ import * as React from 'react';
 import { Provider } from 'react-redux'
 import * as ReactDOM from 'react-dom'
 
+import { App } from './components/App'
+import { store } from './reducers'
+import { logger } from './logger'
+import { heartbeatAction } from './reducers/actions'
 import {
     CPU_POLE_INTERVAL,
     API_URL,
     ENDPOINTS,
 } from './constants'
-import { logger } from './logger'
-import { store } from './reducers'
-import { heartbeatAction } from './reducers/actions'
-import { App } from './components/App'
-import { heavyLoadSnapshots } from './selectors'
-import { updateChart } from './components/Chartjs';
 
 const rootElement = document.getElementById('root')
 ReactDOM.render(
@@ -33,7 +31,7 @@ export type LoadSnapshot = {
 
 const roundToHundredth = (num: number): number => Math.round(num * 100) / 100
 
-const getColor = (load: number): string => `rgb(${Math.round(255 * load)}, 0, 0);`
+const getColor = (load: number): string => `rgb(${Math.round(255 * load)}, 0, 0)`
 
 const getAverageLoad = async (): Promise<LoadAverage> => {
     const { data: { load } } = (await axios.get(`${API_URL}/${ENDPOINTS.getCpuAverage}`))

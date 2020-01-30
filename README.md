@@ -9,6 +9,17 @@ The local server surfaces a single endpoint.  This endpoint returns the average 
 
 The browser client monitors the user's CPU usage, giving them insight into trends in load, and alerting them when load becomes extreme.
 
+
+Something confusing about the instructions:
+
+// - Has my computer been under heavy CPU load for 2 minutes or more? When? How many times?
+// - A CPU is considered under high average load when it has exceeded 1 for 2 minutes or more.
+
+// - Has my computer recovered from heavy CPU load? When? How many times?
+// - A CPU is considered recovered from high average load when it drops below 1 for 2 minutes or more
+
+I took this to mean that a low period takes place only when two minutes of **consecutive** low readings occur **after** an uninterrupted high period occurs.  
+
 ## To run
 Starting the server:
 ```bash
@@ -20,28 +31,9 @@ Starting the client:
 npm run start-client
 ```
 
-Starting both:
-```bash
-npm run start
-```
-
 ## Given more time...
 
 * Remove all unneeded //s
 * Install linter
-
-Something confusing about the instructions:
-
-// - Has my computer been under heavy CPU load for 2 minutes or more? When? How many times?
-// - A CPU is considered under high average load when it has exceeded 1 for 2 minutes or more.
-
-
-// - Has my computer recovered from heavy CPU load? When? How many times?
-// - A CPU is considered recovered from high average load when it drops below 1 for 2 minutes or more
-
-I took this to mean that a low period takes place only when two minutes of **consecutive** low readings occur **after** an uninterrupted high period occurs.  
-
-
-Question: Does recovery mean...
-  * It drops below 1 CPU for over two minutes after being above for over two minutes?
-  * It drops below 1 CPU for over two minutes after being above for over for any amount of time?
+* Add media queries
+* 

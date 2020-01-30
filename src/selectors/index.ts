@@ -83,11 +83,11 @@ const updatePeriod = (periods: LoadPeriodPartial[], snapshot: LoadSnapshot): voi
 
 const trimIncomplete = (periods: LoadPeriodPartial[]): LoadPeriod[] => {
     return periods.reduce((ps: LoadPeriod[], { start, end }) => {
-        if(start && end) {
+        if (start && end) {
             ps.push({ start, end })
         }
         return ps
-    }, []) 
+    }, [])
 }
 
 export const getLatestSnapshot = (state: State): LoadSnapshot | null => {
@@ -100,13 +100,22 @@ export const getLatestSnapshot = (state: State): LoadSnapshot | null => {
     }
 }
 
-export const getCpuRange = (state: State): LoadPeriod => {
+export type MaxAndMin = {
+    max: LoadSnapshot | null;
+    min: LoadSnapshot | null;
+}
+export const getCpuRange = (state: State): MaxAndMin => {
     const snapshots = getSnapshots(state)
-    return snapshots.reduce((highAndLow: LoadPeriod, snapshot) => {
-
+    return snapshots.reduce((highAndLow: MaxAndMin, snapshot) => {
+        if (!highAndLow.max || snapshot.load > highAndLow.max.load) {
+            highAndLow.max = snapshot
+        } else if (!highAndLow.min || snapshot.load < highAndLow.min.load) {
+            highAndLow.min = snapshot
+        }
+        return highAndLow
     }, {
-        high: null,
-        low: null
+        max: null,
+        min: null
     })
 }
 

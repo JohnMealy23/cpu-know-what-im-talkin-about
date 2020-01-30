@@ -16,12 +16,7 @@ export const snapshotReducer = (
                 if (SNAPSHOT_LIFESPAN > now - snapshot.time.getTime()) {
                     snapshots.push(snapshot)
                 } else {
-                    logger('dropping:', {
-                        snapshot,
-                        SNAPSHOT_LIFESPAN,
-                        now,
-                        snapshotTime: snapshot.time.getTime()
-                    })
+                    logger('dropping:', snapshot)
                 }
                 return snapshots
             }, [])
