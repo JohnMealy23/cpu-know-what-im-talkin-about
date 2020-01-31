@@ -20,7 +20,7 @@ Something confusing about the instructions:
 
 I took this to mean that a low period takes place only when two minutes of **consecutive** low readings occur **after** an uninterrupted high period occurs.  
 
-## To run
+## To Run
 Starting the server:
 ```bash
 npm run start-server
@@ -31,9 +31,26 @@ Starting the client:
 npm run start-client
 ```
 
+Navigate to http://localhost:1234/
+
+__Note__: The constants.ts file can be adjusted to reduce threshold for what determines "high load".  
+
+## To Test
+```bash
+npm test
+```
+
 ## Given more time...
 
+* Use Thunk to contain logic.
+* Research directory structure.  Still coming up to speed about modern organization practices.
+* Asked for more clarity from Product
+    * getCpuRange
 * Remove all unneeded //s
 * Install linter
-* Add media queries
-* 
+* Fixed up the GUI
+    * CSS animations to avoid the jank
+    * Add media queries
+    * Beef up the chart. Better integration with state. 
+* Caching
+* More memoizing

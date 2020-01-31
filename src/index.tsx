@@ -12,6 +12,7 @@ import {
     API_URL,
     ENDPOINTS,
 } from './constants'
+import { getColor } from './utils';
 
 const rootElement = document.getElementById('root')
 ReactDOM.render(
@@ -30,8 +31,6 @@ export type LoadSnapshot = {
 }
 
 const roundToHundredth = (num: number): number => Math.round(num * 100) / 100
-
-const getColor = (load: number): string => `rgb(${Math.round(255 * load)}, 0, 0)`
 
 const getAverageLoad = async (): Promise<LoadAverage> => {
     const { data: { load } } = (await axios.get(`${API_URL}/${ENDPOINTS.getCpuAverage}`))

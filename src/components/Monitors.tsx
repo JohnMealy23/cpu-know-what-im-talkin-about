@@ -23,6 +23,7 @@ import {
 import {
     COLOR_WARNING,
     COLOR_RECOVERY,
+    COLOR_NOMINAL,
 } from '../constants'
 import { formatTime } from '../utils'
 import { LoadSnapshot } from '..'
@@ -33,7 +34,7 @@ const MonitorsContainer = styled.div`
     padding-bottom: 15px;
     display: flex;
     ${({ backgroundColor }: { backgroundColor?: string }) => backgroundColor && css`
-        background-color: backgroundColor;
+        background-color: ${backgroundColor};
     `}
 `
 
@@ -127,12 +128,17 @@ const getWarning = (
     { highs, lows }: LoadPeriods,
     latestSnapshot: LoadSnapshot
 ): WarningInfo | null => {
+    
+    // Test if current snapshot is in the current high or low period
     if (isInPeriod(highs, latestSnapshot)) {
         return {
             color: COLOR_WARNING,
             text: LANGUAGE_WARNING_ALERT
         }
-    } else if (isInPeriod(lows, latestSnapshot)) {
+    } else if (
+        isInPeriod(lows, latestSnapshot) &&
+        highs.length
+    ) {
         return {
             color: COLOR_RECOVERY,
             text: LANGUAGE_RECOVERY_ALERT
@@ -142,9 +148,20 @@ const getWarning = (
     }
 }
 
-const isInPeriod = (highs: LoadPeriod[], latestSnapshot: LoadSnapshot): boolean =>
-    !!highs.length && highs[highs.length - 1].end === latestSnapshot
+// Check to see that the last period has a start but no end, or that its end
+// matches the last snapshot taken:
+const isInPeriod = (periods: LoadPeriod[], latestSnapshot: LoadSnapshot): boolean =>
+    (
+        periods.length && 
+        periods[periods.length - 1].start &&
+        (
+            !periods[periods.length - 1].end ||
+            periods[periods.length - 1].end === latestSnapshot
+        )
+    )
 
+
+const trimIncomplete = (periods: LoadPeriod[]): LoadPeriod[] => periods.filter(({ start, end }) => start && end)
 
 const getPeriodElem = ({ start, end }: LoadPeriod) => (<li key={start.id}>
     <StyledOl>
@@ -154,18 +171,16 @@ const getPeriodElem = ({ start, end }: LoadPeriod) => (<li key={start.id}>
 </li>)
 
 const StyledOl = styled.ol`
-    margin: 8px;
-    max-width: 350px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
     list-style: none;
+    border-top: 1px solid ${COLOR_NOMINAL};
 `
 
 export const Monitors = () => {
     const highsAndLows = useSelector(getHighAndLowPeriods)
     const latestSnapshot = useSelector(getLatestSnapshot)
-
-    const averageCpuMonitor = <AverageCpuMonitor latestSnapshot={latestSnapshot}></AverageCpuMonitor>
-    const cpuRangeMonitor = <CpuRangeMonitor></CpuRangeMonitor>
-    const loadHistoryMonitors = <HighsAndLowsMonitor highsAndLows={highsAndLows}></HighsAndLowsMonitor>
 
     let warningMonitor
     if (latestSnapshot) {
@@ -173,6 +188,15 @@ export const Monitors = () => {
     } else {
         warningMonitor = <span></span>
     }
+
+    // We kept the partial periods to detect if we were still in 
+    const highsAndLowsComplete = {
+        highs: trimIncomplete(highsAndLows.highs),
+        lows: trimIncomplete(highsAndLows.lows)
+    }
+    const averageCpuMonitor = <AverageCpuMonitor latestSnapshot={latestSnapshot}></AverageCpuMonitor>
+    const cpuRangeMonitor = <CpuRangeMonitor></CpuRangeMonitor>
+    const loadHistoryMonitors = <HighsAndLowsMonitor highsAndLows={highsAndLowsComplete}></HighsAndLowsMonitor>
     
     return <div>
         <MonitorLabel>
