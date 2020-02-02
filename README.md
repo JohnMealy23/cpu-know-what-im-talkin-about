@@ -1,4 +1,4 @@
-# DataDog Challenge
+# CPU Know What I'm Talkin' About
 A simple CPU monitoring application
 
 ## Overview
