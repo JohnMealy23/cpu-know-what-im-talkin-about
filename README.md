@@ -7,12 +7,16 @@ This application consists of a local server and a frontend module.
 
 The local server surfaces a single endpoint.  This endpoint returns the average load of the user's CPU.
 
-The browser client monitors the user's CPU usage, giving them insight into trends in load, and alerting them when load becomes extreme.
+The browser client monitors the user's CPU usage, giving them insight into trends in load, alerting them when load becomes extreme, and alerting again when back within nominal range:
+- A CPU is considered under high average load when it has exceeded 1 for 2 minutes or more.
+- A CPU is considered recovered from high average load when it drops below 1 for 2 minutes or more.
 
 ## Approach
 I've designed the state to keep `state.snapshots.load`, an array of time-based snapshots retained for the preset amount of time.  This array is populated by the app's heartbeat, and is intended to be a single source of truth by which the app's readouts and eventing are designed around.
 
 All behavior is configured in the `/src/constants.ts` file.
+
+I've been out of the React/Redux space for quite awhile now, so I still have learning to do in terms of project organization.  Comments on this would be appreciated.
 
 ## To Setup
 Install node modules:
@@ -31,9 +35,7 @@ Starting the client:
 npm run start-client
 ```
 
-Navigate to http://localhost:1234/
-
-__Note__: The constants.ts file can be adjusted to reduce threshold for what determines "high load".  
+Navigate to http://localhost:1234/ 
 
 ## To Test
 Run unit tests with:
