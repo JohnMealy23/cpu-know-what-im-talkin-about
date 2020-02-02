@@ -10,7 +10,6 @@ module.exports = {
     "/config/",
     "/jestSetup.js"
   ],
-  "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.ts?$",
   "moduleFileExtensions": [
     "ts",
     "tsx",

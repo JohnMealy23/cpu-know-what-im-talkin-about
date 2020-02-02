@@ -4,7 +4,7 @@
   "description": "Learn about CPU load here: https://en.wikipedia.org/wiki/Load_%28computing%29",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "start-client": "parcel src/index.html -p 1234",
     "start-server": "ts-node  -O '{\"module\": \"commonjs\"}' ./server/index.ts",
     "build": "parcel build src/index.html"
@@ -34,8 +34,14 @@
   "devDependencies": {
     "@types/jest": "^25.1.1",
     "jest": "^25.1.0",
+    "jest-date-mock": "^1.0.8",
     "parcel-bundler": "^1.12.4",
     "ts-jest": "^25.1.0",
     "typescript": "^3.7.5"
+  },
+  "jest": {
+    "setupFiles": [
+      "jest-date-mock"
+    ]
   }
 }

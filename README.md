@@ -9,16 +9,9 @@ The local server surfaces a single endpoint.  This endpoint returns the average 
 
 The browser client monitors the user's CPU usage, giving them insight into trends in load, and alerting them when load becomes extreme.
 
+## A Little Philosophy
 
-Something confusing about the instructions:
-
-// - Has my computer been under heavy CPU load for 2 minutes or more? When? How many times?
-// - A CPU is considered under high average load when it has exceeded 1 for 2 minutes or more.
-
-// - Has my computer recovered from heavy CPU load? When? How many times?
-// - A CPU is considered recovered from high average load when it drops below 1 for 2 minutes or more
-
-I took this to mean that a low period takes place only when two minutes of **consecutive** low readings occur **after** an uninterrupted high period occurs.  
+From the onset, this sounds simple enough.  
 
 ## To Run
 Starting the server:
@@ -42,11 +35,12 @@ npm test
 
 ## Given more time...
 
-* Use Thunk to contain logic.
+* Use middleware to contain logic.
 * Research directory structure.  Still coming up to speed about modern organization practices.
 * Asked for more clarity from Product
-    * getCpuRange
-* Remove all unneeded //s
+    * Double-check logic for "high load" and "recovery period"
+    * Get direction on what "alert the user" means.
+    * How long is a recovery period?  The instructions only mention the starting point.
 * Install linter
 * Fixed up the GUI
     * CSS animations to avoid the jank
