@@ -1,8 +1,8 @@
 {
-  "name": "dd",
+  "name": "cpu-know-what-im-talkin-about",
   "version": "1.0.0",
   "description": "Learn about CPU load here: https://en.wikipedia.org/wiki/Load_%28computing%29",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest --coverage",
     "start-client": "parcel src/index.html -p 1234",
