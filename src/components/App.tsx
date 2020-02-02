@@ -4,6 +4,7 @@ import { ChartElem } from './Chartjs'
 // import { ChartOuterContainerStyled } from './ChartContainer'
 import styled from 'styled-components'
 import { Monitors } from './Monitors'
+import { DEBUG } from '../constants'
 
 const AppContainerStyled = styled.div`
     width: 100%;
@@ -12,7 +13,7 @@ const AppContainerStyled = styled.div`
 export const App = () => {
     return <AppContainerStyled>
         <Monitors></Monitors>
-        <PauseButton></PauseButton>
+        {DEBUG && <PauseButton></PauseButton>}
         <ChartElem></ChartElem>
     </AppContainerStyled>
 }

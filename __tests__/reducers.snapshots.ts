@@ -1,6 +1,6 @@
-import { snapshotReducer } from '../src/state/snapshots'
+import { snapshotReducer, SnapshotState } from '../src/state/snapshots'
 import { getMokeState } from './mocks/getMockState'
-import { HEARTBEAT } from '../src/state/actions'
+import { HEARTBEAT, DISMISS_WARNING, PAUSE } from '../src/state/actions'
 import * as constants from '../src/constants'
 import { advanceTo } from 'jest-date-mock';
 
@@ -11,7 +11,7 @@ import { advanceTo } from 'jest-date-mock';
     ; (constants.SNAPSHOT_LIFESPAN as any) = 100000
 
 describe('snapshots reducer', () => {
-    let mockState: any
+    let mockState: SnapshotState
     let mockHeartbeatAction: any
     const nextLoad = {
         id: 77,
@@ -83,11 +83,49 @@ describe('snapshots reducer', () => {
     it('should compile all high periods and recovery periods', () => {
         const result = snapshotReducer(mockState, mockHeartbeatAction)
         const initialWarning = getMokeState().snapshots.warning
-        console.log(1, result.warning)
         expect(result.warning).not.toEqual(initialWarning)
         expect(result.warning).toEqual({
             active: true,
             type: 'RECOVERY_FLAG',
+        })
+    })
+    it('should return a copy of the state by default', () => {
+        const mockUnrelatedAction = {
+            type: PAUSE,
+        }
+        const result1 = snapshotReducer(mockState, mockUnrelatedAction)
+        expect(result1).not.toBe(mockState)
+        expect(result1).toEqual(mockState)
+    })
+    it('should not trigger a new warning when a warning of the same type was just dismissed', () => {
+        mockState.warning = {
+            active: false, 
+            type: constants.RECOVERY_FLAG
+        }
+        
+        // Ensure the action removes the warning:
+        const result = snapshotReducer(mockState, mockHeartbeatAction)        
+        expect(result.warning).toEqual(mockState.warning)
+        expect(result.warning).not.toBe(mockState.warning)
+    })
+    it('should dismiss warninigs, and not trigger new ones from the same state', () => {
+        const mockDismissAction = {
+            type: DISMISS_WARNING,
+        }
+        
+        // Ensure the current state dictates an active warning:
+        const result1 = snapshotReducer(mockState, mockHeartbeatAction)
+        expect(result1.warning.active).toBe(true)
+        expect(result1.warning).toEqual({
+            active: true, 
+            type: constants.RECOVERY_FLAG
+        })
+        
+        // Ensure the action removes the warning:
+        const result2 = snapshotReducer(mockState, mockDismissAction)        
+        expect(result2.warning).toEqual({
+            active: false, 
+            type: null
         })
     })
 })

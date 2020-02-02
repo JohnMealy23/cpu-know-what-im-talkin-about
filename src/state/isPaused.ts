@@ -1,10 +1,10 @@
-import { PAUSE, PauseAction } from "./actions";
+import { PAUSE, Actions } from "./actions";
 
 const initialState: boolean = false;
 
 export const isPausedReducer = (
     state = initialState,
-    { type }: PauseAction
+    { type }: Actions
 ) => {
     switch (type) {
         case PAUSE:

@@ -47,6 +47,7 @@ const getLoadSnapshot = async (): Promise<LoadSnapshot> => {
         load,
     }
 }
+
 const heartbeat = async (): Promise<void> => {
     logger('heartbeat start')
     const loadSnapshot = await getLoadSnapshot()

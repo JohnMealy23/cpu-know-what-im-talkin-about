@@ -1,3 +1,3 @@
-import { LOGGING } from "../constants"
+import { DEBUG } from "../constants"
 
-export const logger = (...rest: any[]) => LOGGING && console.log(...rest)
+export const logger = (...rest: any[]) => DEBUG && console.log(...rest)

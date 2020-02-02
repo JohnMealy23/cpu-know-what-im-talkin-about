@@ -316,7 +316,7 @@ export const getMokeState = () => ({
                     "time": new Date(new Date("2020-02-02T02:33:27.908Z")),
                     "load": 0.24
                 },
-                "type": "HIGH_LOAD_FLAG"
+                "type": "HIGH_LOAD_FLAG" as const
             },
             {
                 "start": {
@@ -331,12 +331,12 @@ export const getMokeState = () => ({
                     "time": new Date(new Date("2020-02-02T02:34:11.908Z")),
                     "load": 0.17
                 },
-                "type": "RECOVERY_FLAG"
+                "type": "RECOVERY_FLAG" as const
             }
         ],
         "warning": {
             "type": null,
-            "active": null
+            "active": false
         }
     },
     "isPaused": false

@@ -19,12 +19,11 @@ export const dismissWarningAction = (): DismissWarningAction => ({
     type: DISMISS_WARNING
 })
 
-export type SnapshotActions = HeartbeatAction | DismissWarningAction
-
-
 // Pause actions:
 export type PauseAction = {
     type: 'PAUSE';
 }
 export const PAUSE = 'PAUSE' as const
 export const pausedAction = (): PauseAction => ({ type: PAUSE })
+
+export type Actions = HeartbeatAction | DismissWarningAction | PauseAction

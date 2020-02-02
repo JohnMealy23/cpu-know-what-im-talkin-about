@@ -1,5 +1,5 @@
 import { LoadSnapshot } from "..";
-import { HEARTBEAT, SnapshotActions, DISMISS_WARNING } from "./actions";
+import { HEARTBEAT, Actions, DISMISS_WARNING } from "./actions";
 import {
     HIGH_LOAD_THRESHOLD_CPU,
     HIGH_LOAD_THRESHOLD_DURATION,
@@ -44,7 +44,7 @@ const initialState = {
 
 export const snapshotReducer = (
     state: SnapshotState = initialState,
-    action: SnapshotActions
+    action: Actions
 ) => {
     let newState
     switch (action.type) {
@@ -62,7 +62,7 @@ export const snapshotReducer = (
             newState.warning = {...state.warning, active: false }
             return newState
         default:
-            return state
+            return {...state}
     }
 }
 
@@ -159,7 +159,7 @@ const trimIncompleteReducer = (
 const hasPassedThreshold = (
     timeEarlier: Date,
     timeLater: Date,
-    threshold: number = HIGH_LOAD_THRESHOLD_DURATION
+    threshold: number
 ): boolean => {
     const timespan = timeLater.getTime() - timeEarlier.getTime()
     return timespan > threshold
@@ -183,7 +183,7 @@ const getWarning = (
             active: true,
         }
     } else {
-        newWarning = oldWarning
+        newWarning = {...oldWarning}
     }
     return newWarning
 }
