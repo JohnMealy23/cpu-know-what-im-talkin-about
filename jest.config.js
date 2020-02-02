@@ -21,5 +21,8 @@ module.exports = {
   "testPathIgnorePatterns": [
     "/node_modules/",
     "/mocks/",
+  ],
+  "setupFiles": [
+    "jest-date-mock"
   ]
 }
