@@ -1,4 +1,4 @@
-import { HIGH_LOAD_THRESHOLD_CPU, COLOR_WARNING, COLOR_RECOVERY } from "./constants"
+import { HIGH_LOAD_THRESHOLD_CPU, COLOR_WARNING, COLOR_RECOVERY } from "../constants"
 
 export const formatTime = (time: Date) => `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
 
@@ -11,3 +11,5 @@ export const getColor = (load: number): string => {
 }
 
 export const getGradientColor = (load: number): string => `rgb(${Math.round(255 * load)}, 0, 0)`
+
+export const roundToHundredth = (num: number): number => Math.round(num * 100) / 100

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Chart, { ChartPoint, ChartData } from 'chart.js';
 import { formatTime } from '../utils';
 import { useSelector } from 'react-redux';
-import { getLatestSnapshot } from '../selectors';
+import { getLatestSnapshot } from '../state/selectors';
 import styled from 'styled-components';
 import { LANGUAGE_CHART_LABEL } from '../language';
 

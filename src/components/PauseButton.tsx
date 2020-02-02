@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { store } from '../reducers'
-import { pausedAction } from '../reducers/actions'
-import { getIsPaused } from '../selectors'
+import { store } from '../state'
+import { pausedAction } from '../state/actions'
+import { getIsPaused } from '../state/selectors'
 import { useSelector } from 'react-redux'
 
 export const PauseButton = () => {

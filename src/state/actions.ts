@@ -1,5 +1,6 @@
 import { LoadSnapshot } from ".."
 
+// Snapshot actions:
 export type HeartbeatAction = {
     type: 'HEARTBEAT';
     data: LoadSnapshot;
@@ -10,6 +11,18 @@ export const heartbeatAction = (data: LoadSnapshot): HeartbeatAction => ({
     data
 })
 
+export type DismissWarningAction = {
+    type: 'DISMISS_WARNING';
+}
+export const DISMISS_WARNING = 'DISMISS_WARNING' as const
+export const dismissWarningAction = (): DismissWarningAction => ({
+    type: DISMISS_WARNING
+})
+
+export type SnapshotActions = HeartbeatAction | DismissWarningAction
+
+
+// Pause actions:
 export type PauseAction = {
     type: 'PAUSE';
 }

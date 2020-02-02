@@ -4,15 +4,15 @@ import { Provider } from 'react-redux'
 import * as ReactDOM from 'react-dom'
 
 import { App } from './components/App'
-import { store } from './reducers'
-import { logger } from './logger'
-import { heartbeatAction } from './reducers/actions'
+import { store } from './state'
+import { logger } from './utils/logger'
+import { heartbeatAction } from './state/actions'
 import {
     CPU_POLE_INTERVAL,
     API_URL,
     ENDPOINTS,
 } from './constants'
-import { getColor } from './utils';
+import { getColor, roundToHundredth } from './utils';
 
 const rootElement = document.getElementById('root')
 ReactDOM.render(
@@ -30,8 +30,6 @@ export type LoadSnapshot = {
     load: LoadAverage;
 }
 
-const roundToHundredth = (num: number): number => Math.round(num * 100) / 100
-
 const getAverageLoad = async (): Promise<LoadAverage> => {
     const { data: { load } } = (await axios.get(`${API_URL}/${ENDPOINTS.getCpuAverage}`))
     return roundToHundredth(load) as LoadAverage
@@ -40,7 +38,8 @@ const getAverageLoad = async (): Promise<LoadAverage> => {
 let snapshotId = 0
 const getLoadSnapshot = async (): Promise<LoadSnapshot> => {
     const time = new Date
-    const load = await getAverageLoad()
+    let load = await getAverageLoad()
+    load = (window as any).fakeLoad || load
     return {
         id: snapshotId++,
         color: getColor(load),
